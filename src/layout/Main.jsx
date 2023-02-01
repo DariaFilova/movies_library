@@ -15,21 +15,28 @@ class Main extends Component {
 
 
     componentDidMount() {
-        /* setTimeout(() => {
-            
-        }, 3000); */
-        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=attack on titan`)
+        this.setState({ loading: true })
+        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=attack on titan`)
             .then(response => response.json())
-            .then(data => this.setState({ movies: data.Search }))
+            .then(data => this.setState({ movies: data.Search, loading: false }))
+            .catch(error => {
+                console.error(error);
+                this.setState({ loading: false });
+            })
 
     }
 
     searchMovies = (str, type = 'all') => {
         this.setState({ loading: true });
-        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${str.trim() ? str : 'attack on titan'}${type !== 'all' ? `&type=${type}` : ''}`)
+        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${str.trim() ? str : 'attack on titan'}${type !== 'all' ? `&type=${type}` : ''}`)
             .then(response => response.json())
             .then(data => this.setState({ movies: data.Search }))
             .then(() => this.setState({ loading: false }))
+            .catch(error => {
+                console.error(error);
+                this.setState({ loading: false });
+            })
+
 
 
     }
